@@ -1,0 +1,24 @@
+name: Release Alpha (Development) Version
+
+on:
+  push:
+    tags:
+      - release-alpha.* # Push events to release-alpha.0.1 tags
+
+jobs:
+  release-alpha:
+
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Firebase CLI
+        run: curl -sL https://firebase.tools | bash
+
+      - name: Publish Artifact to Firebase
+        run: firebase appdistribution:distribute ./HighvibeAlpha.ipa --app=APP_ID --token DEV_FIREBASE_TOKEN
+        env:
+          APP_ID: ${{ secrets.APP_ID }}
+          DEV_FIREBASE_TOKEN: ${{ secrets.DEV_FIREBASE_TOKEN }}
+
